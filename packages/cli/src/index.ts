@@ -1,12 +1,6 @@
 import { Command } from "commander";
+import { sendTelegramMessage } from "sendkit-core";
 
-type TelegramResponse = {
-    ok: boolean;
-    result?: {
-        message_id: number;
-    };
-    description?: string;
-};
 const program = new Command();
 
 program
@@ -17,7 +11,7 @@ program
     .argument("<chatId>", "The Telegram chat ID")
     .argument("<message>", "The message text to send")
     .action(async (chatId: string, message: string) => {
-       const token = process.env.TELEGRAM_BOT_TOKEN;
+        const token = process.env.TELEGRAM_BOT_TOKEN;
         if (!token) {
             console.error("Error: TELEGRAM_BOT_TOKEN is not set in the environment variables.");
             process.exit(1);
@@ -26,28 +20,18 @@ program
             console.error("Error: Both chatId and message are required.");
             process.exit(1);
         }
-        const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                chat_id: chatId,
-                text: message,
-            }),
-        });
-
-        const data: TelegramResponse = await response.json();
-        if (!data.ok || !response.ok) {
-            const detail= data.description || response.statusText;
-            console.error(`Telegram API Request failed : ${detail}`);
-            process.exit(1);   
-        }
-
-        const messageId = data.result?.message_id;
-        console.log(`Send Telegram Message to chat ${chatId}`);
-        if (messageId !== undefined) {
-            console.log(`Message sent successfully! Message ID: ${messageId}`);
+        try {
+            const result = await sendTelegramMessage({
+                botToken: token,
+                chatId,
+                message
+            });
+            console.log("Sent Telegram Message to chat", result.chatId);
+            console.log("Telegram Message ID:", result.messageId);
+        } catch (error) {
+            const detail = error instanceof Error ? error.message : String(error);
+            console.error("Error sending Telegram message:", detail);
+            process.exit(1);
         }
 
     });
