@@ -1,34 +1,35 @@
 import { z } from "zod";
 
 export const telegramMessageInputSchema = z.object({
-    chatId: z.string().min(1, 'Chat ID is required'),
-    message: z.string().min(1, 'Message is required'),
-})
+  chatId: z.string().min(1, "Chat ID is required"),
+  message: z.string().min(1, "Message is required"),
+});
 
 export const telegramMessageOptionsSchema = telegramMessageInputSchema.extend({
-    botToken: z.string().min(1, 'Telegram Bot Token is required'),
-})
+  botToken: z.string().min(1, "Telegram Bot Token is required"),
+});
 
 export const telegramSendMessageRequestSchema = z.object({
-    chat_id: z.string().min(1,),
-    text: z.string().min(1,),
-})
+  chat_id: z.string().min(1),
+  text: z.string().min(1),
+});
 export const telegramSendMessageResponseSchema = z.object({
-    ok: z.boolean(),
-    result: z.object({
-        message_id: z.number().min(1,),
-    }).optional(),
-    description: z.string().optional(),
-})
+  ok: z.boolean(),
+  result: z
+    .object({
+      message_id: z.number().min(1),
+    })
+    .optional(),
+  description: z.string().optional(),
+});
 export const telegramMessageOutputSchema = z.object({
-    ok: z.literal(true),
-    chatId: z.string(),
-    messageId: z.number(),
-})
+  ok: z.literal(true),
+  chatId: z.string(),
+  messageId: z.number(),
+});
 
-
-export type TelegramMessageInput = z.infer<typeof telegramMessageInputSchema>
-export type TelegramMessageOptions = z.infer<typeof telegramMessageOptionsSchema>
+export type TelegramMessageInput = z.infer<typeof telegramMessageInputSchema>;
+export type TelegramMessageOptions = z.infer<typeof telegramMessageOptionsSchema>;
 // export type TelegramSendMessageRequest = z.infer<typeof telegramSendMessageRequestSchema>
 // export type TelegramSendMessageResponse = z.infer<typeof telegramSendMessageResponseSchema>
-export type TelegramMessageOutput = z.infer<typeof telegramMessageOutputSchema>
+export type TelegramMessageOutput = z.infer<typeof telegramMessageOutputSchema>;
