@@ -105,10 +105,8 @@ app.post("/:botToken/mcp", async (c) => {
     sessionIdGenerator: undefined,
     enableJsonResponse: true,
   });
-
-  await server.connect(transport);
-
   try {
+    await server.connect(transport);
     return await transport.handleRequest(c.req.raw);
   } finally {
     await server.close();
