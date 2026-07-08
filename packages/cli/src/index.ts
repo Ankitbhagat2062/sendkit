@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import { Command } from "commander";
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { mkdir } from "node:fs/promises";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { sendTelegramMessage } from "@guha/sendkit-core";
@@ -13,19 +12,19 @@ const cliConfigSchema = z.object({
   telegramBotToken: z.string().min(1).optional(),
 });
 function writeTelegramBotToken(token: string) {
-  mkdir(dirname(configPath), { recursive: true });
+  mkdirSync(dirname(configPath), { recursive: true });
   writeFileSync(configPath, `${JSON.stringify({ telegramBotToken: token }, null, 2)}\n`, {
     mode: 0o600,
   });
 }
 function getTelegramBotToken() {
   if (!existsSync(configPath)) {
-    throw new Error(`Telegram BotToken is required.Run "sendkit init" `);
+    throw new Error(`Telegram BotToken is required. Run "sendkit init"`);
   }
   const config = cliConfigSchema.parse(JSON.parse(readFileSync(configPath, "utf-8")));
   const token = config.telegramBotToken;
   if (!token) {
-    throw new Error(`Telegram BotToken is required.Run "sendkit init" `);
+    throw new Error(`Telegram BotToken is required. Run "sendkit init"`);
   }
   return token;
 }
