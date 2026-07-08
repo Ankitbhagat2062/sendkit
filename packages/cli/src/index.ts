@@ -3,7 +3,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { mkdir } from "node:fs/promises";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
-import { sendTelegramMessage } from "sendkit-core";
+import { sendTelegramMessage } from "@guha/sendkit-core";
 import { z } from "zod";
 
 const program = new Command();

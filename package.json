@@ -7,6 +7,9 @@
   ],
   "type": "module",
   "scripts": {
+     "build:core": "bun run --filter @guha/sendkit-core build",
+    "build:cli": "bun run --filter @guha/sendkit build",
+    "build:local-mcp": "bun run --filter @guha/sendkit-mcp build",
     "dev:cli": "bun run packages/cli/src/index.ts",
     "dev:local-mcp": "bun run packages/local-mcp/src/index.ts",
     "dev:remote-mcp": "bun run apps/remote-mcp/src/index.ts",
